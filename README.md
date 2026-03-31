@@ -12,9 +12,9 @@ This project builds an **end-to-end machine learning pipeline** for predicting m
 #  Project Structure
     GenrePrediction/
     │
-    ├── trainer.py # Train models + save artifacts
-    ├── validate.py # Evaluate models
-    ├── inference.py # Run predictions
+    ├── trainer.py 
+    ├── validate.py 
+    ├── inference.py 
     │
     ├── preprocess.py
     ├── encoding.py
