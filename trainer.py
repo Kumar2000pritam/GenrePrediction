@@ -73,6 +73,8 @@ def main():
 
         logreg_metrics=artifacts["logreg_metrics"],
         xgb_metrics=artifacts["xgb_metrics"],
+
+        X_train=artifacts["X_train"]
     )
 
     print("\n Artifacts saved successfully!")

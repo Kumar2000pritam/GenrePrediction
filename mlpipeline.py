@@ -201,8 +201,8 @@ def run_full_ml_pipeline(df, genre_map, min_genre_count=50):
     print("\n===== MODEL EXPLANATION =====")
     print("EXPLAINABILITY INSIGHTS GENERATED SUCCESSFULLY")
     print("===================================\n")
-    plot_combined_global_shap(xgb_models, X_test, list(X_train.columns), model_type="xgb")
-    plot_combined_global_shap(logreg_models, X_test, list(X_train.columns), model_type="logreg")
+    plot_combined_global_shap(xgb_models, X_test,X_train, list(X_train.columns), model_type="xgb")
+    plot_combined_global_shap(logreg_models, X_test, X_train,list(X_train.columns), model_type="logreg")
     
     plot_model_comparison(xgb_metrics=xgb_metrics,logreg_metrics=logreg_metrics)
     # =========================================================

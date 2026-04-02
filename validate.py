@@ -106,6 +106,7 @@ def validate_both_models(df, model_artifacts,genre_map):
     lr_shap = plot_combined_global_shap(
         logreg_models,
         X_df.values,
+        model_artifacts["X_train"],
         feature_names=valid_features,
         model_type="logreg"
     )
@@ -115,6 +116,7 @@ def validate_both_models(df, model_artifacts,genre_map):
     xgb_shap = plot_combined_global_shap(
         xgb_models,
         X_df.values,
+        model_artifacts["X_train"],
         feature_names=valid_features,
         model_type="xgb"
     )

@@ -34,12 +34,13 @@ def plot_model_comparison(logreg_metrics, xgb_metrics):
 
 
 
-def plot_combined_global_shap(models, X, feature_names, model_type="xgb"):
+def plot_combined_global_shap(models, X,X_train, feature_names, model_type="xgb"):
     """
     Combines SHAP importance across all labels into ONE global view
     """
 
     X_df = pd.DataFrame(X, columns=feature_names)
+    X_train = pd.DataFrame(X_train, columns=feature_names)
 
     all_shap_values = []
 
@@ -51,11 +52,11 @@ def plot_combined_global_shap(models, X, feature_names, model_type="xgb"):
         # Select Explainer
         # -------------------------------
         if model_type == "logreg":
-            explainer = shap.LinearExplainer(model, X_df)
+            explainer = shap.LinearExplainer(model, X_train)
             shap_values = explainer(X_df).values
         else:
             explainer = shap.TreeExplainer(model)
-            shap_values = explainer.shap_values(X_df)
+            shap_values = explainer(X_df).values
 
         # -------------------------------
         # Ensure correct shape
@@ -100,16 +101,14 @@ def plot_combined_global_shap(models, X, feature_names, model_type="xgb"):
     plt.show(block=True)
 
     return importance_df
-def explain_prediction(models, x_instance, feature_names, predicted_labels, label_names, model_type="xgb"):
+def explain_prediction(models, x_instance,X_train, feature_names, predicted_labels, label_names, model_type="xgb"):
     """
     Explain ONLY predicted labels using SHAP waterfall
     """
 
-    import shap
-    import matplotlib.pyplot as plt
-
     # x_instance = x_instance.reshape(1, -1)
     x_instance = pd.DataFrame([x_instance], columns=feature_names)
+    X_train= pd.DataFrame(X_train,columns=feature_names)
     for i, model in enumerate(models):
 
         # Skip labels that are NOT predicted
@@ -122,7 +121,7 @@ def explain_prediction(models, x_instance, feature_names, predicted_labels, labe
 
         # Select explainer
         if model_type == "logreg":
-            explainer = shap.LinearExplainer(model, x_instance)
+            explainer = shap.LinearExplainer(model, X_train)
             shap_values = explainer(x_instance)
         else:
             explainer = shap.TreeExplainer(model)

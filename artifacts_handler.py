@@ -16,7 +16,8 @@ def save_artifacts(
     feature_columns=None,
     label_names=None,
     logreg_metrics=None,
-    xgb_metrics=None
+    xgb_metrics=None,
+    X_train=None
 ):
     """
     Saves FULL ML pipeline artifacts for production.
@@ -93,6 +94,9 @@ def save_artifacts(
     if xgb_metrics is not None:
         joblib.dump(xgb_metrics, f"{path}/xgb_metrics.pkl")
 
+    if X_train is not None:
+        joblib.dump(X_train, f"{path}/X_train.pkl")
+
     print(f"\n ALL ARTIFACTS SAVED SUCCESSFULLY AT: {path}")
 def load_artifacts(path):
     """
@@ -151,6 +155,9 @@ def load_artifacts(path):
         # =========================
         "logreg_metrics": safe_load(f"{path}/logreg_metrics.pkl"),
         "xgb_metrics": safe_load(f"{path}/xgb_metrics.pkl"),
+
+        "X_train": safe_load(f"{path}/X_train.pkl"),
+
     }
 
     print("\n All available artifacts loaded successfully")

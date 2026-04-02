@@ -3,6 +3,13 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import f1_score, hamming_loss
 import numpy as np
 
+def compute_scale_pos_weight(y):
+    weights = []
+    for i in range(y.shape[1]):
+        pos = np.sum(y[:, i] == 1)
+        neg = np.sum(y[:, i] == 0)
+        weights.append(neg / pos if pos != 0 else 1)
+    return weights
 
 def xgb_multilabel(
     X_train,
@@ -24,7 +31,7 @@ def xgb_multilabel(
     models = []
     y_prob = np.zeros((X_test.shape[0], n_labels))
     best_params_per_label = []
-
+    scale_pos_weights = compute_scale_pos_weight(y_train)
     # ==========================
     # DEFAULT BEST PARAMS
     # ==========================
@@ -62,7 +69,8 @@ def xgb_multilabel(
         print(f" Training label {i}...")
 
         y_tr = y_train[:, i]
-
+    
+        spw = scale_pos_weights[i]
         # ======================
         # WITH TUNING
         # ======================
@@ -72,7 +80,8 @@ def xgb_multilabel(
                 XGBClassifier(
                     eval_metric="logloss",
                     tree_method="hist",
-                    n_jobs=-1
+                    n_jobs=1,
+                    scale_pos_weight=spw
                 ),
                 param_grid,
                 scoring="f1",
@@ -89,7 +98,7 @@ def xgb_multilabel(
         # WITHOUT TUNING
         # ======================
         else:
-            model = XGBClassifier(**default_params)
+            model = XGBClassifier(**default_params,scale_pos_weight=spw)
             model.fit(X_train, y_tr)
             best_params = default_params
 

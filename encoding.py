@@ -151,22 +151,22 @@ def generate_text_embeddings(X_train, X_test, model_name='paraphrase-multilingua
     model = SentenceTransformer(model_name)
 
     # Generate embeddings for train and test
-    train_emb = model.encode(
-        X_train['combined_text'].tolist(),
-        show_progress_bar=True
-    )
+    # train_emb = model.encode(
+    #     X_train['combined_text'].tolist(),
+    #     show_progress_bar=True
+    # )
 
-    test_emb = model.encode(
-        X_test['combined_text'].tolist(),
-        show_progress_bar=True
-    )
+    # test_emb = model.encode(
+    #     X_test['combined_text'].tolist(),
+    #     show_progress_bar=True
+    # )
 
     # Save embeddings (useful for large datasets to avoid recomputation)
-    np.save("x_train_temp_embeddings.npy", train_emb)
-    np.save("x_test_temp_embeddings.npy", test_emb)
+    # np.save("x_train_temp_embeddings.npy", train_emb)
+    # np.save("x_test_temp_embeddings.npy", test_emb)
 
     # Optional: Load instead of recomputing (commented)
-    # train_emb = np.load('x_train_temp_embeddings.npy')
-    # test_emb = np.load('x_test_temp_embeddings.npy')
+    train_emb = np.load('x_train_temp_embeddings.npy')
+    test_emb = np.load('x_test_temp_embeddings.npy')
 
     return train_emb, test_emb, model

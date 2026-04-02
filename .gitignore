@@ -3,3 +3,4 @@ ml_artifacts
 __pycache__
 x_test_temp_embeddings.npy
 x_train_temp_embeddings.npy
+final_folder_artifacts

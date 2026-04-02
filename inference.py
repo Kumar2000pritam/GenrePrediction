@@ -59,6 +59,7 @@ def inference_model(df, artifacts):
     explain_prediction(
     models=xgb_models,
     x_instance=X.values[0],
+    X_train=artifacts["X_train"],
     feature_names=feature_names,
     predicted_labels=xgb_pred[0],
     label_names=mlb.classes_,
@@ -67,6 +68,7 @@ def inference_model(df, artifacts):
     explain_prediction(
     models=logreg_models,
     x_instance=X.values[0],
+    X_train=artifacts["X_train"],
     feature_names=feature_names,
     predicted_labels=logreg_pred[0],
     label_names=mlb.classes_,
@@ -83,7 +85,7 @@ def inference_model(df, artifacts):
     logreg_labels = mlb.inverse_transform(logreg_pred)
     xgb_labels = mlb.inverse_transform(xgb_pred)
     final_labels = mlb.inverse_transform(y_pred)
-    
+    print(final_labels)
     return {
         "logreg_pred": logreg_pred,
         "xgb_pred": xgb_pred,
